@@ -56,34 +56,26 @@ static int seek_file(File file, SeekAnchor start, long offset) {
 // open operation fails, the global 'fserror' is set to OPEN_FAILED,
 // otherwise to NONE.
 File open_file(char *name) {
-  //gave to us in class
   File f;
-  //gave to us in class
 	//allocates memory 
   f=malloc(sizeof(struct _FileInternal));
   fserror=NONE;
   //if file existd open it, if not create it, if cant give error
   // try to open existing file
-	//gave to us in class
   f->fp=fopen(name, "r+");
-  //gave to us in class
   if (!f->fp) {
-    //gave to us in class
     // fail, fall back to creation
     f->fp=fopen(name, "w+");
-    //gave to us in class
     if (!f->fp) {
       fserror=OPEN_FAILED;
       return NULL;
     }
   }
-  //gave to us in class
   //initialize because the first two bytes may be empty
   f->mem[0]=0;
   f->mem[1]=0;
   //get the first 2 bytes
   read_file_from(f,f->mem,2L,BEGINNING_OF_FILE,0L);
-  //gave to us in class
   seek_file(f,BEGINNING_OF_FILE,0L);
   return f;
 }
@@ -91,7 +83,6 @@ File open_file(char *name) {
 // close a 'file'.  If the close operation fails, the global 'fserror'
 // is set to CLOSE_FAILED, otherwise to NONE.
 void close_file(File file) {
-  //gave to us in class
   if (file->fp && ! fclose(file->fp)) {
     fserror=NONE;
   }
@@ -99,7 +90,6 @@ void close_file(File file) {
     fserror=CLOSE_FAILED;
   }
   if(file){
-    //gave to us in class
     //frees the memory reserved in the open function
     free(file);
   }
@@ -159,7 +149,6 @@ unsigned long write_file_at(File file, void *data, unsigned long num_bytes,
     // (it can't be this easy, can it?)
     fserror=ILLEGAL_MZ;
   }
-  //works for golden1.c and golden2.c after you update mem
   else if(file->mem[0]=='M'&& !strncmp(data, "Z", 1)){
     fserror=ILLEGAL_MZ;
   }
